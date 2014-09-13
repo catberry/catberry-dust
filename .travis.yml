@@ -1,26 +1,3 @@
 language: node_js
 node_js:
-  - "0.10"
-  - "0.8"
-env:
-  - TEST="all"
-  - TEST="node"
-matrix:
-  exclude:
-    - node_js: "0.10"
-      env: TEST="node"
-    - node_js: "0.8"
-      env: TEST="all"
-notifications:
-  email:
-    - jdemorais@linkedin.com
-    - vbasavaraj@linkedin.com
-    - jleppert@linkedin.com
-    - jchan@linkedin.com
-    - skinast@linkedin.com
-before_install:
-  - npm install -g npm@1.4
-  - npm --version
-  - npm install -g grunt-cli
-script:
-  - "[ $TEST = 'all' ] && grunt test || grunt testNode"
+  - 0.10
