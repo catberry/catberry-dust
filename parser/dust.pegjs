@@ -39,11 +39,11 @@ section "section"
   }
 
 /*-------------------------------------------------------------------------------------------------------------------------------------
-   sec_tag_start is defined as matching an opening brace followed by one of #?^<+@% plus identifier plus context plus param
+   sec_tag_start is defined as matching an opening brace followed by one of #?^<+@ plus identifier plus context plus param
    followed by 0 or more white spaces
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 sec_tag_start
-  = ld t:[#?^<+@%] ws* n:identifier c:context p:params
+  = ld t:[#?^<+@] ws* n:identifier c:context p:params
   { return [t, n, c, p] }
 
 /*-------------------------------------------------------------------------------------------------------------------------------------
@@ -194,11 +194,11 @@ comment "comment"
   { return ["comment", c.join('')].concat([['line', line()], ['col', column()]]) }
 
 /*-------------------------------------------------------------------------------------------------------------------------------------
-   tag is defined as matching an opening brace plus any of #?^><+%:@/~% plus 0 or more whitespaces plus any character or characters that
+   tag is defined as matching an opening brace plus any of #?^><+:@/~ plus 0 or more whitespaces plus any character or characters that
    doesn't match rd or eol plus 0 or more whitespaces plus a closing brace
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 tag
-  = ld ws* [#?^><+%:@/~%] ws* (!rd !eol .)+ ws* rd
+  = ld ws* [#?^><+:@/~] ws* (!rd !eol .)+ ws* rd
   / reference
 
 ld

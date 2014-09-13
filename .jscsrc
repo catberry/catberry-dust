@@ -38,6 +38,7 @@
 	"excludeFiles": [
 		"./**/node_modules/**",
 		"./coverage/**",
+		"./lib/parser.js",
 		"./node_modules/**"
 	]
 }
