@@ -37,10 +37,7 @@
 	"scripts": {
 		"test": "grunt test"
 	},
-	"bin": {
-		"dustc": "./bin/dustc"
-	},
-	"main": "lib/server.js",
+	"main": "./lib/server.js",
 	"browser": "./lib/dust.js",
 	"repository": {
 		"type": "git",
