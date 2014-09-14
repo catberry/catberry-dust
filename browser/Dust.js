@@ -30,14 +30,14 @@
 
 'use strict';
 
+var Stub = require('../lib/Stub'),
+	Context = require('../lib/Context'),
+	Promise = require('promise'),
+	TemplateManager = require('../lib/managers/TemplateManager'),
+	HelperManager = require('../lib/managers/HelperManager'),
+	FilterManager = require('../lib/managers/FilterManager');
+
 module.exports = Dust;
-
-var util = require('util'),
-	DustBase = require('../browser/Dust'),
-	Context = require('./Context'),
-	Stream = require('./Stream');
-
-util.inherits(Dust, DustBase);
 
 /**
  * Creates new instance of Dust template engine.
@@ -45,21 +45,61 @@ util.inherits(Dust, DustBase);
  * @constructor
  */
 function Dust($logger) {
-	DustBase.call(this, $logger);
+	this.helperManager = new HelperManager();
+	this.filterManager = new FilterManager();
+	this.templateManager = new TemplateManager();
+	this.logger = $logger || this.logger;
 }
 
 /**
- * Gets stream for template rendering.
- * @param {string} name Name of template.
- * @param {Object} context Data context.
- * @returns {Stream} Stream with content.
+ * Current helper manager.
+ * @type {HelperManager}
  */
-Dust.prototype.getStream = function (name, context) {
-	var stream = new Stream(this),
-		chunk = stream.head;
-	this.templateManager
-		.invoke(name, stream.head, Context.wrap(context, name))
-		.end();
+Dust.prototype.helperManager = null;
 
-	return stream;
+/**
+ * Current filter manager.
+ * @type {FilterManager}
+ */
+Dust.prototype.filterManager = null;
+
+/**
+ * Current template manager.
+ * @type {TemplateManager}
+ */
+Dust.prototype.templateManager = null;
+
+/**
+ * Current logger.
+ * @type {Logger|Object}
+ */
+Dust.prototype.logger = {
+	warn: function () {},
+	error: function () {}
+};
+
+/**
+ * Renders template.
+ * @param {string} name Template name.
+ * @param {Object} context Data context.
+ * @returns {Promise} Promise for content.
+ */
+Dust.prototype.render = function (name, context) {
+	var self = this;
+	return new Promise(function (fulfill, reject) {
+		var callback = function (error, content) {
+			if (error) {
+				reject(error);
+				return;
+			}
+			fulfill(content);
+		};
+		var stub = new Stub(self, callback),
+			chunk = stub.head,
+			context = Context.wrap(context, name, self);
+
+		self.templateManager
+			.invoke(name, chunk, context)
+			.end();
+	});
 };

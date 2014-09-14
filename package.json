@@ -37,8 +37,12 @@
 	"scripts": {
 		"test": "grunt test"
 	},
-	"main": "./lib/server.js",
-	"browser": "./lib/dust.js",
+	"main": "./index.js",
+	"browser": {
+		"./lib/Dust": "./browser/Dust",
+		"./lib/TemplateManager": "./browser/TemplateManager",
+		"./lib/TemplateProvider": "./browser/TemplateProvider"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/catberry/catberry-dust.git"

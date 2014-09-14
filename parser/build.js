@@ -61,4 +61,3 @@ Promise.all([
 	}, function (reason) {
 		console.error(reason);
 	});
-
