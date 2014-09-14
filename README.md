@@ -1,5 +1,4 @@
 #Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust)
-====
 This is the Catberry fork of linkedin fork of Dust template engine.
 
 ##Getting Started
