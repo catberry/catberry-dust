@@ -33,6 +33,7 @@
 module.exports = Dust;
 
 var Stub = require('../lib/Stub'),
+	Stream = require('../lib/Stream'),
 	Context = require('../lib/Context'),
 	TemplateManager = require('../lib/managers/TemplateManager'),
 	HelperManager = require('../lib/managers/HelperManager'),
@@ -93,12 +94,29 @@ Dust.prototype.render = function (name, context) {
 			}
 			fulfill(content);
 		};
-		var stub = new Stub(self, callback),
-			chunk = stub.head,
-			context = Context.wrap(context, name, self);
+		var stub = new Stub(self, callback);
 
 		self.templateManager
-			.invoke(name, chunk, context)
+			.invoke(name, stub.head, Context.wrap(context, name, self))
 			.end();
 	});
+};
+
+/**
+ * Gets stream for template rendering.
+ * @param {string} name Name of template.
+ * @param {Object} context Data context.
+ * @returns {Stream} Stream with content.
+ */
+Dust.prototype.getStream = function (name, context) {
+	var stream = new Stream(this),
+		self = this;
+
+	process.nextTick(function () {
+		self.templateManager
+			.invoke(name, stream.head, Context.wrap(context, name, self))
+			.end();
+	});
+
+	return stream;
 };
