@@ -39,9 +39,9 @@
 	},
 	"main": "./index.js",
 	"browser": {
-		"./lib/Dust": "./browser/Dust",
-		"./lib/TemplateManager": "./browser/TemplateManager",
-		"./lib/TemplateProvider": "./browser/TemplateProvider"
+		"./lib/Dust.js": "./browser/Dust.js",
+		"./lib/managers/TemplateManager.js": "./browser/TemplateManager.js",
+		"./lib/TemplateProvider.js": "./browser/TemplateProvider.js"
 	},
 	"repository": {
 		"type": "git",

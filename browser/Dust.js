@@ -30,14 +30,13 @@
 
 'use strict';
 
+module.exports = Dust;
+
 var Stub = require('../lib/Stub'),
 	Context = require('../lib/Context'),
-	Promise = require('promise'),
 	TemplateManager = require('../lib/managers/TemplateManager'),
 	HelperManager = require('../lib/managers/HelperManager'),
 	FilterManager = require('../lib/managers/FilterManager');
-
-module.exports = Dust;
 
 /**
  * Creates new instance of Dust template engine.
