@@ -1,5 +1,5 @@
 #Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust)
-This is the Catberry fork of linkedin fork of Dust template engine.
+It is Catberry fork of Linkedin fork of Dust template engine.
 
 ##Getting Started
 A quick tutorial for how to use Dust <https://github.com/linkedin/dustjs/wiki/Dust-Tutorial>
@@ -17,13 +17,13 @@ No global variables anymore.
 * Removed `tap` helper, use `context.tap` in helpers instead
 * You can add helpers via `dust.helperManager.add('helperName', helper)`
 * You can add filters via `dust.filterManager.add('filterName', filter)`
-* Improve logging, remove many redundant messages
+* Improved logging, removed many redundant messages
 * Compiled templates do not use global variable `dust`
 * Removed redundant pragmas such as `{%esc}` from Dust grammar
 * Method `dust.render` returns a `Promise`
 
 ##Usage
-This Dust template engine is already included in Catberry 
+This Dust template engine is already included in
 [Catberry Framework](https://github.com/catberry/catberry) and can be used via
 framework API.
 
