@@ -51,7 +51,7 @@ function TemplateManager() {
  * @param {string} compiled Compiled source of template.
  */
 TemplateManager.prototype.registerCompiled = function (name, compiled) {
-	var wrapped = 'this._storage[' + name + '] = ' + compiled;
+	var wrapped = 'this._storage[\'' + name + '\'] = ' + compiled;
 	/*jshint evil:true*/
 	eval(wrapped);
 };

@@ -37,7 +37,7 @@ module.exports = {
 	register: function (locator, config) {
 		config = config || {};
 		locator.register('dust', Dust, config, true);
-		locator.register('teamplateProvider', TemplateProvider, config, true);
+		locator.register('templateProvider', TemplateProvider, config, true);
 	},
 	Dust: Dust,
 	TemplateProvider: TemplateProvider
