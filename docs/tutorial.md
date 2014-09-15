@@ -41,9 +41,9 @@ Famous People
 </ul>
 ```
 
-Dust templates output plain old text and processes dust tags -- `{xxxxxx}` being 
+Dust templates output plain old text and processes dust tags - `{xxxxxx}` being 
 a dust tag format. The tag structure is similar to html in general form but 
-using braces instead of &lt;&gt;, e.g. `{name /}`, `{name}body inside tag{/name}` 
+using braces instead of `<>`, e.g. `{name /}`, `{name}body inside tag{/name}` 
 and with parameters `{name param="val1" param2="val",... }`.
 
 The simplest form is just `{name}` and is called a key. It references a value 
@@ -83,7 +83,7 @@ any filters)
   * Hello `{name|uc}` encodes with JS native encodeURIComponent
   * Hello `{name|js}` stringify JSON literal
   * Hello `{name|jp}` parse JSON string to object
-* Filters can be chained &ndash; Hello `{name|s|h}`
+* Filters can be chained &ndash; `Hello {name|s|h}`
 * Special characters can be escaped if you need to output them: 
   * `{~n}` &ndash; newline
   * `{~r}` &ndash; CR
