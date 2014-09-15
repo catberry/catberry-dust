@@ -41,9 +41,9 @@ Famous People
 </ul>
 ```
 
-Dust templates output plain old text and processes dust tags - `{xxxxxx}` being 
-a dust tag format. The tag structure is similar to html in general form but 
-using braces instead of `<>`, e.g. `{name /}`, `{name}body inside tag{/name}` 
+Dust templates output plain old text and processes dust tags &ndash; `{xxxxxx}` 
+being a dust tag format. The tag structure is similar to html in general form 
+but using braces instead of `<>`, e.g. `{name /}`, `{name}body inside tag{/name}` 
 and with parameters `{name param="val1" param2="val",... }`.
 
 The simplest form is just `{name}` and is called a key. It references a value 
