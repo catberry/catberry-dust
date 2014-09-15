@@ -51,6 +51,7 @@ function TemplateManager() {
  * @param {string} compiled Compiled source of template.
  */
 TemplateManager.prototype.registerCompiled = function (name, compiled) {
+	name = this.escapeName(name);
 	var wrapped = 'this._storage[\'' + name + '\'] = ' + compiled;
 	/*jshint evil:true*/
 	eval(wrapped);

@@ -38,7 +38,8 @@
 	"excludeFiles": [
 		"./**/node_modules/**",
 		"./coverage/**",
-		"./test/**",
+		"./test/lib/coreTests.js",
+        "./test/lib/helperTests.js",
 		"./lib/parser.js",
 		"./node_modules/**"
 	]

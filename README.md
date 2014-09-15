@@ -1,4 +1,4 @@
-#Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust)
+#Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-dust/badge.png)](https://coveralls.io/r/catberry/catberry-dust)
 It is Catberry fork of Linkedin fork of Dust template engine.
 
 ##Getting Started
@@ -18,9 +18,12 @@ No global variables anymore.
 * Removed `tap` helper, use `context.tap` in helpers instead
 * You can add helpers via `dust.helperManager.add('helperName', helper)`
 * You can add filters via `dust.filterManager.add('filterName', filter)`
+* You can register and compile templates via 
+`dust.templateManager.compile(source)` and
+`dust.templateManager.registerCompiled(name, compiled)`
 * Improved logging, removed many redundant messages
 * Compiled templates do not use global variable `dust`
-* Removed redundant pragmas such as `{%esc}` from Dust grammar
+* Removed redundant pragmas such as `{%esc:s}` from Dust grammar
 * Method `dust.render` returns a `Promise`
 
 ##Usage
@@ -42,8 +45,8 @@ var Dust = require('catberry-dust').Dust,
 
 Compile, register and render at server:
 ```javascript
-var compiled = dust.compile('{#some}Source{/some}');
-dust.registerCompiled('someTemplateName', compiled);
+var compiled = dust.templateManager.compile('{#some}Source{/some}');
+dust.templateManager.registerCompiled('someTemplateName', compiled);
 
 var stream = dust.getStream('someTemplateName', {some: true});
 stream.pipe(process.stdout);
@@ -56,7 +59,7 @@ dust.render('someTemplateName', {some: true})
 
 Register and render in browser (template should be compiled already):
 ```javascript
-dust.registerCompiled('someTemplateName', compiled);
+dust.templateManager.registerCompiled('someTemplateName', compiled);
 
 dust.render('someTemplateName', {some: true})
 	.then(function (content){
