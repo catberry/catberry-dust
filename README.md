@@ -13,6 +13,7 @@ No global variables anymore.
 * It has TemplateProvider and Service Locator registration for [Catberry Framework](https://github.com/catberry/catberry)
 * There are no ECMAScript 5 shims like indexOf and JSON
 * There is no stream and compiler in browser
+* Stream is based on node.js [Readable](http://nodejs.org/api/stream.html#stream_class_stream_readable)
 * Helpers are built-in
 * Removed `tap` helper, use `context.tap` in helpers instead
 * You can add helpers via `dust.helperManager.add('helperName', helper)`
