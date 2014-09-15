@@ -2,7 +2,7 @@
 It is Catberry fork of Linkedin fork of Dust template engine.
 
 ##Getting Started
-A quick tutorial for how to use Dust <https://github.com/linkedin/dustjs/wiki/Dust-Tutorial>
+A quick tutorial for how to use Dust [here](docs/tutorial.md).
 
 ##Difference from LinkedIn fork
 * All code base is optimized for 
