@@ -21,6 +21,8 @@ No global variables anymore.
 * You can register and compile templates via 
 `dust.templateManager.compile(source)` and
 `dust.templateManager.registerCompiled(name, compiled)`
+* By default `h` filter is applied to value, if you specify any filter(s) 
+it will not apply `h` filter after your filters 
 * Improved logging, removed many redundant messages
 * Compiled templates do not use global variable `dust`
 * Removed redundant pragmas such as `{%esc:s}` from Dust grammar
