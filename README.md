@@ -1,4 +1,4 @@
-#Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-dust/badge.png)](https://coveralls.io/r/catberry/catberry-dust)
+#Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-dust/badge.png?branch=master)](https://coveralls.io/r/catberry/catberry-dust?branch=master)
 It is Catberry fork of Linkedin fork of Dust template engine.
 
 ##Getting Started
