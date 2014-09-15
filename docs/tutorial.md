@@ -10,20 +10,24 @@ A quick sample is often the best way to get a general sense of something.
 In that vein, here is a simple Dust template and it's JSON data below it
 
 Template: 
-```html
- {title}
- <ul>
- {#names}
-  <li>{name}</li>{~n}
- {/names}
- </ul>
+```
+{title}
+<ul>
+{#names}
+	<li>{name}</li>{~n}
+{/names}
+</ul>
 ```
 
 JSON:
 ```json
 {
- "title": "Famous People", 
- "names" : [{ "name": "Larry" },{ "name": "Curly" },{ "name": "Moe" }]
+	"title": "Famous People", 
+	"names" : [
+		{ "name": "Larry" },
+		{ "name": "Curly" },
+		{ "name": "Moe" }
+	]
 }
 ```
 
@@ -31,10 +35,10 @@ This will output:
 ```html
 Famous People 
 <ul>
-  <li>Larry</li>
-  <li>Curly</li>
-  <li>Moe</li>
- </ul>
+	<li>Larry</li>
+	<li>Curly</li>
+	<li>Moe</li>
+</ul>
 ```
 
 Dust templates output plain old text and processes dust tags -- `{xxxxxx}` being 
@@ -71,21 +75,21 @@ Use the `/* message */` form instead.
 * ```{`   Preserve all new lines, whitespace, and braces `}```
 * All output values are escaped to avoid Cross Site Scripting (XSS) unless you 
 use filters: 
-** Hello `{name|s}` suppresses auto-escaping (removes default filter)
-** Hello `{name|h}` force HTML escaping (by default if you do not specify 
+  * Hello `{name|s}` suppresses auto-escaping (removes default filter)
+  * Hello `{name|h}` force HTML escaping (by default if you do not specify 
 any filters)
-** Hello `{name|j}` force JavaScript escaping
-** Hello `{name|u}` encodes with JS native encodeURI
-** Hello `{name|uc}` encodes with JS native encodeURIComponent
-** Hello `{name|js}` stringify JSON literal
-** Hello `{name|jp}` parse JSON string to object
+  * Hello `{name|j}` force JavaScript escaping
+  * Hello `{name|u}` encodes with JS native encodeURI
+  * Hello `{name|uc}` encodes with JS native encodeURIComponent
+  * Hello `{name|js}` stringify JSON literal
+  * Hello `{name|jp}` parse JSON string to object
 * Filters can be chained &ndash; Hello `{name|s|h}`
 * Special characters can be escaped if you need to output them: 
-** `{~n}` &ndash; newline
-** `{~r}` &ndash; CR
-** `{~lb}` &ndash; left bracket
-** `{~rb}` &ndash; right bracket 
-** `{~s}` &ndash; space
+  * `{~n}` &ndash; newline
+  * `{~r}` &ndash; CR
+  * `{~lb}` &ndash; left bracket
+  * `{~rb}` &ndash; right bracket 
+  * `{~s}` &ndash; space
 
 You can register your own filters using 
 `dust.filterManager.add(name, filter)`/`dust.filterManager.remove(name)`.
@@ -138,14 +142,14 @@ Let's explore how context works with a more complex JSON model.
 
 ```json
 {
-   "name": "root",
-   "anotherName": "root2",
-   "A":{
-      "name":"Albert",
-      "B":{
-         "name":"Bob"
-      }
-   }
+	"name": "root",
+	"anotherName": "root2",
+	"A": {
+		"name":"Albert",
+		"B": {
+			"name":"Bob"
+		}
+	}
 }
 ```
 
@@ -178,9 +182,9 @@ you to reference a path visible within the current context.
 You CANNOT reference a value using paths when that pathed value is outside your 
 current context.
 Lets look at an example to make this point clear.
-```html
+```
 {#A.B}
-  name in B={name} name in A= {A.name} 
+	name in B={name} name in A= {A.name} 
 {/A.B}
 ```
 
@@ -200,11 +204,11 @@ ancestor/parents JSON from the current context, you can use a
 non-pathed section reference to adjust your context to a higher point. 
 For example:
 
-```html
+```
 {#A.B} name in B={name} 
- {#A} 
-   name in A: {name} 
- {/A} 
+	{#A} 
+		name in A: {name} 
+	{/A} 
 {/A.B}
 ```
 
@@ -213,9 +217,9 @@ the value into the section as an inline parameter
 (we will talk more about parameters soon). Here is an example of how to access 
 `A.name` within the `{#A.B}` context using a parameter on the `{#A.B}` section
 
-```html
+```
 {#A.B param=A.name} 
-  name in B={name} name in A: {param} 
+	name in B={name} name in A: {param} 
 {/A.B}
 ```
 
@@ -226,9 +230,9 @@ possible incompatibility which we will discuss in a bit.
 
 So what does the change do? If you look at the example above 
 (using the same data):
-```html
+```
 {#A.B}
-  name in B={name} name in A={A.name} 
+	name in B={name} name in A={A.name} 
 {/A.B}
 ```
 
@@ -296,18 +300,17 @@ and also reference data from `B`, without explicit context setting we would
 have trouble doing this. 
 ```json
 {
-   "A":
-        {names:
-          ["Albert", "Alan"]
-        },
-    "A2":{
-         "type":"Student"
-      }
+	"A": {
+		"names": ["Albert", "Alan"]
+	},
+	"A2":{
+		"type": "Student"
+	}
 }
 ```
 However, the following:
-```html
-  {#A:A2} {#names}{.} - {type} {/names} {/A}
+```
+{#A:A2} {#names}{.} - {type} {/names} {/A}
 ```
 
 will output `Albert - Student Alan - Student` since both `A` and `A2` are on 
@@ -319,20 +322,20 @@ Since we just dropped a teaser about parameters, let's look at them.
 Section tags allow you to pass parameters into the section for subsequent use. 
 Parameter values can be simple string constants or the name of a value from the 
 data model. For example, using the same data model as earlier:
-```html
-  {#A.B foo="Hi" bar=" Good to see you"}
-      {foo} {name} {bar}
-  {/A.B}
+```
+{#A.B foo="Hi" bar=" Good to see you"}
+	{foo} {name} {bar}
+{/A.B}
 ```
 
 This will output `Hi Bob Good to see you`
 
 As we saw earlier, values from the data model can also be passed. Consider
 
-```html
-  {#A.B foo=A.name bar=anotherName}
-      {foo} {name} {bar}
-  {/A.B}
+```
+{#A.B foo=A.name bar=anotherName}
+	{foo} {name} {bar}
+{/A.B}
 ```
 
 This will output `Albert Bob root2`. It's important to understand the context 
@@ -345,17 +348,17 @@ evaluated in the context of the section using them. Therefore, the following
 will just output `Bob root2` because `{A.name}` is not accessible from the 
 `{#A.B}` context.
 
-```html
-  {#A.B foo="{A.name}" bar="{anotherName}" }
-      {foo} {name} {bar}
-  {/A.B}
+```
+{#A.B foo="{A.name}" bar="{anotherName}" }
+	{foo} {name} {bar}
+{/A.B}
 ```
 
 While you can specify an object as a parameter, e.g.
-```html
-  {#A.B foo=A }
-      {foo.name}
-  {/A.B}
+```
+{#A.B foo=A }
+	{foo.name}
+{/A.B}
 ```
 
 you cannot do anything useful with it since the `{foo.name}` reference is 
@@ -369,9 +372,9 @@ When deciding on parameter names, try to be unique. Inline parameters will
 not override the current context if a property of the same name exists. 
 Let's look at an example:
 
-```html
+```
 {#A name="Not Albert"} 
-  name is {name}.
+	name is {name}.
 {/A}
 ```
 
@@ -379,9 +382,9 @@ will output `name is Albert` since preference goes to data in the current
 context followed by inline parameters then up the context tree.
 
 If we want to be sure we get the value in the parameter we can make it unique.
-```html
+```
 {#A paramName="Not Albert"} 
-  name is {paramName} and {B.name} is still Bob.
+	name is {paramName} and {B.name} is still Bob.
 {/A}
 ```
 will output `name is Not Albert and Bob is still Bob` 
@@ -445,12 +448,12 @@ non-empty object are evaluated to `true`.
 Here is an example of doing something special when the array is empty.
 
 Template:
-```html
+```
 <ul>
 {#friends}
-  <li>{name}, {age}{~n}</li>
+	<li>{name}, {age}{~n}</li>
 {:else}
-  <p>You have no friends!</p>
+	<p>You have no friends!</p>
 {/friends}
 </ul>
 ```
@@ -458,29 +461,29 @@ Template:
 JSON:
 
 ```json
-   {
-   friends: [
-      { name: "Moe", age: 37 },
-      { name: "Larry", age: 39 },
-      { name: "Curly", age: 35 }
-    ]
-   }
+{
+	"friends": [
+		{ "name": "Moe", age: 37 },
+		{ "name": "Larry", age: 39 },
+		{ "name": "Curly", age: 35 }
+	]
+}
 ```
 
 This renders html as expected:
 ```html
- <ul>
-  <li>Moe, 37</li>
-  <li>Larry, 39</li>
-  <li>Curly, 35</li>
- </ul>
+<ul>
+	<li>Moe, 37</li>
+	<li>Larry, 39</li>
+	<li>Curly, 35</li>
+</ul>
 ```
 
 If we change the friends array to be empty, the `{:else}` block is triggered
 ```json
- {
-  "friends": [ ]
- }
+{
+	"friends": [ ]
+}
 ```
 
 In the original dust, it does not trigger the `{:else}` block. Our version 
@@ -509,10 +512,10 @@ only matters to the build process you can use whatever extension works for you.
 
 Let's peek under the covers to see how the Dust template rendering knows 
 about a template. As we said earlier, Dust templates are compiled to JavaScript. 
-```html
-  {>header /}
-   ... template for the body of the page...
-   {>footer  /}
+```
+{>header /}
+	... template for the body of the page...
+{>footer  /}
 ```
 
 As long as the JavaScript for the `header.dust` and `footer.dust` templates 
@@ -530,7 +533,7 @@ Just like in sections, inline parameters will not override the current context
 if a property of the same name exists. For example, if the current context 
 already has `{name: "Albert"}` adding name as a parameter will not override 
 the value when used inside the partial foo. 
-```html
+```
 {>foo name="will not override Albert"/} 
 ```
 
@@ -539,14 +542,14 @@ an object like:
 
 ```json
 {
-  "homeAddress": {
-    "street": "1 Main St",
-    "city": "Anytown"
-  }
+	"homeAddress": {
+		"street": "1 Main St",
+		"city": "Anytown"
+	}
 }
 ```
 
-```html
+```
 {>displayAddress address=homeAddress /}
 ```
 
@@ -556,15 +559,15 @@ These get treated as a path reference and the params are higher in the context
 stack at the point of reference so cannot be found. You need to code such 
 things as:
 
-```html>
+```
 {#address}
-  {street} {city}
+	{street} {city}
 {/address}
 ```
 
 From dust 2.0.0 on, you can write the more natural
 
-```html
+```
 {address.street} {address.city}
 ```
 
@@ -572,8 +575,8 @@ From dust 2.0.0 on, you can write the more natural
 Note that you can also use dynamic partials, that conditionally select the 
 partial to render based on the value in the JSON.
 
-```html
-  {>"flowView{flowName}" /}
+```
+{>"flowView{flowName}" /}
 ```
 
 This sort of usage might suit a case where you have a multi-page flow and 
@@ -589,15 +592,15 @@ There are a lot of helpers that are built in Dust.
 
 Select provides a key value that can be tested within its scope to output 
 desired values. It mimics the switch/case statement. Here are some examples:
-```html
-    {@select key=\"{foo}\"}
-         {@eq value=\"bar\"}foobar{/eq}
-         {@eq value=\"baz\"}foobaz{/eq}
-         {@default} - default Text{/default}
-     {/select}
-     {@select key=foo}
-         {@gte value=5}foobar{/gte}
-     {/select}
+```
+{@select key=\"{foo}\"}
+	{@eq value=\"bar\"}foobar{/eq}
+	{@eq value=\"baz\"}foobaz{/eq}
+	{@default} - default Text{/default}
+{/select}
+{@select key=foo}
+	{@gte value=5}foobar{/gte}
+{/select}
 ```
 
 Each test condition is executed and if `true`, the body is output and all 
@@ -610,42 +613,42 @@ pattern of usage would be for an HTML `<select>`/`<option>` list to mark the
 selected element with a `selected` attribute. The code for that looks like 
 this where `{#options}` is an array of options from the data model. 
 Here the key is directly on the eq rather than on the select helper.
-```html
-          <select name="courses">
-            {#options}
-              <option value="{value}"{@eq key=value value=courseName} selected="true"{/eq} >{label}</option>
-            {/options}
-          </select>
+```
+<select name="courses">
+	{#options}
+		<option value="{value}"{@eq key=value value=courseName} selected="true"{/eq} >{label}</option>
+	{/options}
+</select>
 ```
 
 Similarly, `{@ne}`, `{@lt}`, `{@gt}`, `{@lte}`, `{@gte}` can be used 
 standalone and allow nesting. The following is a valid example
 
-```html
-          {@eq key="CS201" value=courseName}
-           {@eq key="CS101" value=prereq}
-            print it is CS201 course and has CS 101 as prereq 
-           {/eq}
-          {/eq}
+```
+{@eq key="CS201" value=courseName}
+	{@eq key="CS101" value=prereq}
+		print it is CS201 course and has CS 101 as prereq 
+	{/eq}
+{/eq}
 ```
 
 Note that all of `{@eq}`, `{@ne}`, `{@lt}`, `{@gt}`, `{@lte}`, `{@gte}` 
 support an else block so you can output an alternative result if the test 
 is `false`.
 
-```html
-          {@eq key="CS201" value=courseName}
-            You are enrolled in CS201
-          {:else} 
-            You are not enrolled in CS201
-          {/eq}
+```
+{@eq key="CS201" value=courseName}
+	You are enrolled in CS201
+{:else} 
+	You are not enrolled in CS201
+{/eq}
 ```
 
 ####`{@math}` - math helper
 The math helper provides simple computational capabilities. Operations 
 supported are: add, subtract, multiply, divide, mod, abs, floor, and ceil. 
 The general syntax is:
-```html
+```
 {@math key="operand1" method="mathOpName" operand="operand2" /}
 ```
 The helper computes a result using the key, method, and operand values. 
@@ -661,16 +664,16 @@ Some examples will clarify:
 Sometimes you need to choose something to output based on the result of a 
 math helper computation. For example, if the table row number is odd, 
 you want to give it a gray background. 
-```html
+```
 {#rows}
 <tr class="
- {@math key=$idx method="mod" operand=2}
-    {@eq value=0}
-        even
-    {:else}
-         odd
-    {/eq}
- {/math}
+	{@math key=$idx method="mod" operand=2}
+		{@eq value=0}
+			even
+		{:else}
+			odd
+		{/eq}
+	{/math}
 ">
 {/rows}
 ```
@@ -682,14 +685,14 @@ not strings, e.g. `{eq value="0"}` will never be true.
 
 Another example
 
-```html
+```
 {@math key="13" method="add" operand="12"}
- {@gt value=123}
-  13 + 12 > 123
- {/gt}
- {@default}
-  Math is fun
- {/default}
+	{@gt value=123}
+		13 + 12 > 123
+	{/gt}
+	{@default}
+		Math is fun
+	{/default}
 {/math}
 ```
 
@@ -702,18 +705,18 @@ There are a few cases where a simple true/false or exists/non-exists or
 single eq or lt or gt test won't suffice. For those, there is the if helper. 
 
 Some examples
-```html
- {@if cond="{x} < {y} && {b} == {c} && '{e}'.length || '{f}'.length"}
-  <div> x is less than y and b == c and either e or f exists in the output </div> 
- {/if}
-  
- {@if cond="({x} < {y}) || ({x} < 3)"} <div> x<y or x<3 {/if}
-  
- {@if cond="{x} < {y} && {b} == {c} && '{e}'.length || '{f}'.length "}
-   <div>  x is less than y and b == c and either e or f exists in the output </div> 
- {:else}
-   <div> x is >= y </div>
- {/if}
+```
+{@if cond="{x} < {y} && {b} == {c} && '{e}'.length || '{f}'.length"}
+	<div> x is less than y and b == c and either e or f exists in the output </div> 
+{/if}
+
+{@if cond="({x} < {y}) || ({x} < 3)"} <div> x<y or x<3 {/if}
+
+{@if cond="{x} < {y} && {b} == {c} && '{e}'.length || '{f}'.length "}
+	<div>  x is less than y and b == c and either e or f exists in the output </div> 
+{:else}
+	<div> x is >= y </div>
+{/if}
 ```
 
 Caveat #1: In the above example, if there is a possibility of undefined or 
@@ -722,10 +725,10 @@ to check it exists and then check for `{x} > {y}`. This is a known limitation
 since, `{x}` returns nothing when the value of `x` is `undefined` or `false` 
 and thus results in invalid js condition in the if helper
 
-```html
- {@if cond="'{x}'.length && '{y}.length && {x} < {y} && {b} == {c} && '{e}'.length > 0 || '{f}'.length > 0 "}
-  <div> x is less than y and b == c and either e or f exists in the output </div> 
- {/if}
+```
+{@if cond="'{x}'.length && '{y}.length && {x} < {y} && {b} == {c} && '{e}'.length > 0 || '{f}'.length > 0 "}
+	<div> x is less than y and b == c and either e or f exists in the output </div> 
+{/if}
 ```
 
 Caveat #2:  The if helper internally uses javascript `eval`, for complex 
@@ -740,20 +743,20 @@ solution. Currently there is a small set of helpers that come with the release:
 
 When outputting lists of things, you often need to do something different for 
 the last iteration. Consider the case
-```html
+```
 My friends are: 
 {#friends}
-  {name},
+	{name},
 {/friends}
 ```
 
 As written this will produce `Hurley,Kate,Sawyer,Desmond,` leading to the 
 "dangling comma problem". This can be fixed by using the `{@sep}` helper tag 
 as follows:
-```html
+```
 My friends are: 
 {#friends}
- {name}{@sep},{/sep}
+	{name}{@sep},{/sep}
 {/friends}
 ```
 
@@ -765,10 +768,10 @@ The `idx` helper tag provides a way to get the index of the current iteration.
 The need for this has been eliminated by the introduction of `{$idx}`.
 
 For example,
-```html
+```
 My friends are: 
 {#friends}
- <option value="id_{@idx}{.}{/idx}">{name}</option>
+	<option value="id_{@idx}{.}{/idx}">{name}</option>
 {/friends}
 ```
 
@@ -810,18 +813,18 @@ The `pageHeader` and `pageFooter` have default content that is shown
 if the child template does not override them.
 
 Base template
-```html
+```
 <div class="page">
-  <h1>{+pageHeader}PayPal{/pageHeader}</h>
-  <div class="bodyContent">
-    {+bodyContent/}
-  </div>
-  <div class="footer">
-    {+pageFooter}
-       <hr>
-       <a href="/contactUs">Contact Us</a>
-    {/pageFooter}
-  </div>
+	<h1>{+pageHeader}PayPal{/pageHeader}</h1>
+	<div class="bodyContent">
+		{+bodyContent/}
+	</div>
+	<div class="footer">
+		{+pageFooter}
+			<hr>
+			<a href="/contactUs">Contact Us</a>
+		{/pageFooter}
+	</div>
 </div>
 ```
 
@@ -832,7 +835,7 @@ base template as a partial. Then you use one or more "inline partials" defining
 the values for the named blocks in the template.
 
 Child template
-```html
+```
 {! First, insert the base template as a partial !}
 {>"shared/base_template"/}
 
@@ -840,14 +843,14 @@ Child template
 {<bodyContent}
 <p>These are your current settings:</p>
 <ul>
-  <li>xxxx</li>
-  <li>yyy</li>
+	<li>xxxx</li>
+	<li>yyy</li>
 </ul>
 {/bodyContent}
 {<pageFooter}
-       <hr>
-       <a href="/contactUs">About Us</a> |
-       <a href="/contactUs">Contact Us</a>
+	<hr>
+	<a href="/contactUs">About Us</a> |
+	<a href="/contactUs">Contact Us</a>
 {/pageFooter}
 ```
 
@@ -916,9 +919,9 @@ You can add/remove your own helpers using
 
 Thus the general form of a helper is:
 ```javascript
-    function(chunk, context, bodies, params) {
-      code of the helper
-    }
+	function(chunk, context, bodies, params) {
+		code of the helper
+	}
 ```
 
 As far as the parameters go:
