@@ -1,6 +1,6 @@
 'use strict';
 
-global.Promise = require('Promise');
+global.Promise = require('promise');
 var coreTests = require('./coreTests'),
 	helperTests = require('./helperTests'),
 	assert = require('assert'),
