@@ -919,9 +919,9 @@ You can add/remove your own helpers using
 
 Thus the general form of a helper is:
 ```javascript
-	function(chunk, context, bodies, params) {
-		code of the helper
-	}
+function(chunk, context, bodies, params) {
+	code of the helper
+}
 ```
 
 As far as the parameters go:
