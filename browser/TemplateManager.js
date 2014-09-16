@@ -53,6 +53,11 @@ function TemplateManager() {
 TemplateManager.prototype.registerCompiled = function (name, compiled) {
 	name = this.escapeName(name);
 	var wrapped = 'this._storage[\'' + name + '\'] = ' + compiled;
-	/*jshint evil:true*/
-	eval(wrapped);
+	try {
+		/*jshint evil:true*/
+		eval(wrapped);
+	} catch (e) {
+		e.message = e.message + ' (' + name + ')\n' + compiled;
+		throw e;
+	}
 };
