@@ -8,7 +8,7 @@ It is Catberry fork of Linkedin fork of Dust template engine.
 A quick tutorial for how to use Dust [here](docs/tutorial.md).
 
 ##Difference from LinkedIn fork
-* All code base is optimized for 
+* All codebase is optimized for
 [Catberry Framework](https://github.com/catberry/catberry) and [browserify](http://browserify.org/)
 * All components organized via [node modules](http://nodejs.org/api/modules.html#modules_modules)
 * Dust is a constructor now. You should create an instance to use it. 
@@ -18,7 +18,7 @@ No global variables anymore.
 * There is no stream and compiler in browser
 * Stream is based on node.js [Readable](http://nodejs.org/api/stream.html#stream_class_stream_readable)
 * Helpers are built-in
-* Removed `tap` helper, use `context.tap` in helpers instead
+* Removed `tap` helper, use `context.tap` inside helpers instead
 * You can add helpers via `dust.helperManager.add('helperName', helper)`
 * You can add filters via `dust.filterManager.add('filterName', filter)`
 * You can register and compile templates via 
@@ -32,9 +32,14 @@ it will not apply `h` filter after your filters
 * Method `dust.render` returns a `Promise`
 
 ##Usage
-This Dust template engine is already included in
-[Catberry Framework](https://github.com/catberry/catberry) and can be used via
-framework API.
+To use Dust you should register template engine into Catberry locator.
+Actually, [Catberry CLI](https://github.com/catberry/catberry-cli) does it for you.
+
+```javascript
+var dust = require('catberry-dust'),
+	cat = catberry.create(config);
+dust.register(cat.locator);
+```
 
 If you want to use it as a standalone package you need to do following:
 
@@ -76,12 +81,12 @@ Also you need [browserify](http://browserify.org/) your code to use it in browse
 
 ##Contribution
 If you have found a bug, please create pull request with [mocha](https://www.npmjs.org/package/mocha) 
-unit-test which reproduces it or describe all details in issue if you can not 
-implement test. If you want to propose some improvements just create issue or 
-pull request but please do not forget to use `npm test` to be sure that your 
+unit-test which reproduces it or describe all details in an issue if you can not
+implement test. If you want to propose some improvements just create an issue or
+a pull request but please do not forget to use `npm test` to be sure that your
 code is awesome.
 
-All changes should satisfy this [Code Style Guide](https://github.com/catberry/catberry/blob/master/docs/code-style-guide.md).
+All changes should satisfy this [Code Style Guide](https://github.com/catberry/catberry/blob/4.0.0/docs/code-style-guide.md).
 
 Also your changes should be covered by unit tests using [mocha](https://www.npmjs.org/package/mocha).
 
