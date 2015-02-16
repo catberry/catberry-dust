@@ -1,13 +1,13 @@
-#Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-dust/badge.png?branch=master)](https://coveralls.io/r/catberry/catberry-dust?branch=master)
+# Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-dust/badge.png?branch=master)](https://coveralls.io/r/catberry/catberry-dust?branch=master)
 
 [![NPM](https://nodei.co/npm/catberry-dust.png)](https://nodei.co/npm/catberry-dust/)
 
 It is Catberry fork of Linkedin fork of Dust template engine.
 
-##Getting Started
+## Getting Started
 A quick tutorial for how to use Dust [here](docs/tutorial.md).
 
-##Difference from LinkedIn fork
+## Difference from LinkedIn fork
 * All codebase is optimized for
 [Catberry Framework](https://github.com/catberry/catberry) and [browserify](http://browserify.org/)
 * All components organized via [node modules](http://nodejs.org/api/modules.html#modules_modules)
@@ -31,7 +31,7 @@ it will not apply `h` filter after your filters
 * Removed redundant pragmas such as `{%esc:s}` from Dust grammar
 * Method `dust.render` returns a `Promise`
 
-##Usage
+## Usage
 To use Dust you should register template engine into Catberry locator.
 Actually, [Catberry CLI](https://github.com/catberry/catberry-cli) does it for you.
 
@@ -79,7 +79,7 @@ dust.render('someTemplateName', {some: true})
 
 Also you need [browserify](http://browserify.org/) your code to use it in browser.
 
-##Contribution
+## Contribution
 If you have found a bug, please create pull request with [mocha](https://www.npmjs.org/package/mocha) 
 unit-test which reproduces it or describe all details in an issue if you can not
 implement test. If you want to propose some improvements just create an issue or

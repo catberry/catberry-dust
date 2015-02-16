@@ -1,10 +1,10 @@
-#Dust Tutorial
+# Dust Tutorial
 
 * Richard Ragan - PayPal ( Author )
 * Veena Basavaraj - LinkedIn ( Edits )
 * Denis Rechkunov - Catberry ( Edits )
 
-##Show me some Dust
+## Show me some Dust
 
 A quick sample is often the best way to get a general sense of something. 
 In that vein, here is a simple Dust template and it's JSON data below it
@@ -62,7 +62,7 @@ in the object if referenced by keys of the form `{object.propName}`
 * If the property does not exist or has an empty array, nothing from the body 
 of the section is emitted.
 
-###More on Dust Output and Dust Filters
+### More on Dust Output and Dust Filters
 
 Things worth knowing:
 
@@ -95,7 +95,7 @@ You can register your own filters using
 `dust.filterManager.add(name, filter)`/`dust.filterManager.remove(name)`.
 Filter is just a `function (value) { return value.replace(...); }`
 
-##Dust Data and Referencing
+## Dust Data and Referencing
 
 Dust gets its data values from the JavaScript object literal used to render the 
 template. Object literals contain three main types of data: scalars 
@@ -108,7 +108,7 @@ array elements can be referenced by subscripting, e.g. `array[3]`. Object
 properties are referenced using paths, e.g `name.firstName`.  Of course, a path 
 reference can be to a scalar or an array which could then be subscripted.
 
-##Sections
+## Sections
 A section is a Dust tag of the form `{#names}...{/names}`. It is the way you 
 loop over data in Dust.  What happens is the current context 
 (more on context shortly) is set to the `names` part of your JSON data. If names 
@@ -124,7 +124,7 @@ During the execution of the section iteration, two variables are defined:
 
 Note: `$idx` and `$len` work for arrays of primitive types.
 
-##Sections and Context
+## Sections and Context
 
 So if I have two instances of name: value in my JSON, how does Dust decide 
 which one to use to render `{name}`?
@@ -166,7 +166,7 @@ simple key reference will look first in the current context and, if not
 found, search all higher levels up to the root looking for the name. It will 
 not search downward into things like `B` that are nested within `A`.
 
-##Paths
+## Paths
 
 Suppose our context is the root and say we want to work with the data "only" 
 under `B`. Like in JavaScript itself, you can use a dotted notation called a 
@@ -223,7 +223,7 @@ the value into the section as an inline parameter
 {/A.B}
 ```
 
-###New path behavior available as of dust 2.0.0 release
+### New path behavior available as of dust 2.0.0 release
 A change to the limitation of dust paths not searching outside the current 
 context was made in the 2.0.0 release. Note that there is a very slight 
 possible incompatibility which we will discuss in a bit. 
@@ -275,7 +275,7 @@ the path actually appearing somewhere in an outer context. As in the first case,
 adding a leading period will constrain the search to just the current context 
 restoring the old behavior.
 
-##Explicit context setting
+## Explicit context setting
 Normally the visibility of data from the JSON model is controlled by your 
 current context set by the `#` tag, or by inline parameters, plus the ability 
 to access values by the key reference `{name}` and to reset the current context 
@@ -316,7 +316,7 @@ However, the following:
 will output `Albert - Student Alan - Student` since both `A` and `A2` are on 
 the context stack even though `A2` would not normally be there.
 
-##Sections with parameters
+## Sections with parameters
 
 Since we just dropped a teaser about parameters, let's look at them. 
 Section tags allow you to pass parameters into the section for subsequent use. 
@@ -389,7 +389,7 @@ If we want to be sure we get the value in the parameter we can make it unique.
 ```
 will output `name is Not Albert and Bob is still Bob` 
 
-##Parameter rules
+## Parameter rules
 Since parameters are on your mind, let's discuss the three forms parameters 
 can take.
 
@@ -413,7 +413,7 @@ context stack via another param of the same section/partial/helper
 rather than the one known at the point of call. Be careful naming parameters 
 the same as data you are referencing from the context.
 
-##Logic in Templates
+## Logic in Templates
 Templates with logic versus "logic-less" templates is a hotly debated point 
 among template language designer and users. Dust straddles the divide by 
 adopting a "less logic" stance. We all know that real business logic does 
@@ -501,7 +501,7 @@ Your best bet is to pass `1` and `""`, e.g. `param=1` or `param=""`. You could
 also leave off `param=""` if you are sure the name is not elsewhere in your 
 JSON data and accessible. 
 
-##Partials
+## Partials
 
 A Dust template named `xxx` is authored in a file named `xxx.dust`. You can 
 have multiple `.dust` files and reference one Dust template as part of another 
@@ -571,7 +571,7 @@ From dust 2.0.0 on, you can write the more natural
 {address.street} {address.city}
 ```
 
-###Dynamic Partials for Logic
+### Dynamic Partials for Logic
 Note that you can also use dynamic partials, that conditionally select the 
 partial to render based on the value in the JSON.
 
@@ -583,12 +583,12 @@ This sort of usage might suit a case where you have a multi-page flow and
 the controller could pass `page1`, `page2`,... in the data model to dynamically 
 choose which partial to use to implement the view.
 
-##Helpers
+## Helpers
 There are a lot of helpers that are built in Dust.
 
-###Logic Helpers
+### Logic Helpers
 
-####`{@select key="xxx"}` + `@eq`, `@ne`, `@lt`, `@lte`, `@gt`, `@gte`, `@default`
+#### `{@select key="xxx"}` + `@eq`, `@ne`, `@lt`, `@lte`, `@gt`, `@gte`, `@default`
 
 Select provides a key value that can be tested within its scope to output 
 desired values. It mimics the switch/case statement. Here are some examples:
@@ -644,7 +644,7 @@ is `false`.
 {/eq}
 ```
 
-####`{@math}` - math helper
+#### `{@math}` - math helper
 The math helper provides simple computational capabilities. Operations 
 supported are: add, subtract, multiply, divide, mod, abs, floor, and ceil. 
 The general syntax is:
@@ -660,7 +660,7 @@ Some examples will clarify:
 * `{@math key="-8" method="abs"/}` - Result will be 8
 * `{@math key="{$idx}" method="mod" operand="2"/}` - Return 0 or 1 according to $idx value
 
-####`@math` with bodies
+#### `@math` with bodies
 Sometimes you need to choose something to output based on the result of a 
 math helper computation. For example, if the table row number is odd, 
 you want to give it a gray background. 
@@ -699,7 +699,7 @@ Another example
 Using the nested `@eq` `@lt` etc. syntax allows you to output values like a 
 select/case similar to the select helper.
 
-####`{@if cond="condition"}` - if helper
+#### `{@if cond="condition"}` - if helper
 
 There are a few cases where a simple true/false or exists/non-exists or 
 single eq or lt or gt test won't suffice. For those, there is the if helper. 
@@ -735,11 +735,11 @@ Caveat #2:  The if helper internally uses javascript `eval`, for complex
 expression evaluation. Excessive usage of if may lead to sub-optimal 
 performance with rendering, since `eval` is known to be slow. 
 
-###Other Helpers
+### Other Helpers
 
 Dust provides a mechanism to extend the capabilities of the templating 
 solution. Currently there is a small set of helpers that come with the release:
-####`{@sep}` - Separator helper
+#### `{@sep}` - Separator helper
 
 When outputting lists of things, you often need to do something different for 
 the last iteration. Consider the case
@@ -762,7 +762,7 @@ My friends are:
 
 The `{@sep}` helper tag will output it's body content unless this is the 
 final iteration of the containing loop.
-####`{@idx}` - Index helper
+#### `{@idx}` - Index helper
 
 The `idx` helper tag provides a way to get the index of the current iteration. 
 The need for this has been eliminated by the introduction of `{$idx}`.
@@ -779,7 +779,7 @@ Here we are using `idx` to generate a unique id for each option tag in a
 dropdown. Therefore, we would have `id_0`, `id_1`,... for id values. Within 
 the `idx` helper `{.}` references the current iteration count.
 
-####`{@size key="xxx" }` - size helper
+#### `{@size key="xxx" }` - size helper
 The size helper computes the size of the key parameter. The size computed 
 depends on the type of the subject parameter as follows:
 
@@ -791,14 +791,14 @@ has `size=4`
 * `undefined` - `0`, `""`- 0
 * Any other value - length after conversion to string
 
-####`{@contextDump key="current|full" to="output|console"/}` - contextDump helper
+#### `{@contextDump key="current|full" to="output|console"/}` - contextDump helper
 The contextDump helper outputs the current context portion of the JSON data 
 model to the output stream. This can help with debugging if you suspect the 
 context data is not as expected or you aren't sure what the current context is. 
 If you want to change the defaults of `key="current"` and `to="output"`, use 
 the parameters. Remove this tag when done debugging.
 
-##Blocks and Inline Partials
+## Blocks and Inline Partials
 An important need in developing a multi-page web application is to have 
 common elements of the pages defined just once and shared by all pages 
 (Don't Repeat Yourself). Dust provides this with the concept of blocks. 
@@ -859,7 +859,7 @@ within the template. While this might be useful, remember the pains caused
 by global variables in JavaScript and use these with the knowledge that others 
 can stomp on your chosen name inadvertently.
 
-##Dust under the covers
+## Dust under the covers
 Here we take a look at what goes on to actually run a dust template behind 
 the scenes. Typically, your framework or environment is taking care of 
 this for you. If not, then you need to know how to do it.
@@ -882,7 +882,7 @@ var dust = new Dust();
 dust.templateManager.registerCompiled('intro', 'Hello {name}!');
 ```
 
-###Running a Dust Template
+### Running a Dust Template
 Assuming you have the `intro` template we previously compiled and registered, 
 you can run it using the code below. The first argument to `dust.render` is 
 the registered template name, the second argument is the JSON model. 
@@ -897,7 +897,7 @@ dust.render('intro', {name: 'Fred'})
 	});
 ```
 
-###Debugging a Dust Template
+### Debugging a Dust Template
 In addition to the `contextDump` helper, dust can use logger specified in its
 constructor like this:
 
@@ -911,7 +911,7 @@ var dust = new Dust(logger);
 
 Logger is optional and should have only two methods `warn` and `error`.
 
-###Writing a dust helper
+### Writing a dust helper
 
 Dust helpers are javascript functions registered with the `dust.helperManager`.
 You can add/remove your own helpers using 
@@ -997,16 +997,16 @@ Generally, you should always return the output of your helper as a
 output to the accumulation in the `chunk`. Dust chains the result of your 
 helper to further actions which expect to be able to add to the `chunk`. 
 
-##External Support for dust usage
+## External Support for dust usage
 * emacs major-mode for editing html templates is compatible with dust: http://web-mode.org/
 * Dust plugin in JetBrains WebStorm
 
-##Loading dust in the browser
+## Loading dust in the browser
 This fork of dust is optimized for usage with [Catberry Framework](https://github.com/catberry/catberry).
 If you want to use it without Catberry it is highly recommended to write your
 code in [node modules](http://nodejs.org/api/modules.html#modules_modules) and then [browserify](http://browserify.org/) it.
 
-##Difference from LinkedIn fork
+## Difference from LinkedIn fork
 * All code base is optimized for 
 [Catberry Framework](https://github.com/catberry/catberry) and [browserify](http://browserify.org/)
 * All components organized via [node modules](http://nodejs.org/api/modules.html#modules_modules)
