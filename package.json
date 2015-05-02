@@ -1,7 +1,7 @@
 {
 	"name": "catberry-dust",
 	"title": "Catberry fork of Dust - asynchronous template engine",
-	"version": "3.0.8",
+	"version": "3.0.9",
 	"author": {
 		"name": "Aleksander Williams",
 		"url": "http://akdubya.github.com/dustjs"
@@ -54,7 +54,7 @@
 		"views"
 	],
 	"dependencies": {
-		"promise": "^6.1.0"
+		"promise": "^7.0.1"
 	},
 	"devDependencies": {
 		"pegjs": "0.8.0",
