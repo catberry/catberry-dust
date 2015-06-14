@@ -1,4 +1,4 @@
-# Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust) [![Coverage Status](https://coveralls.io/repos/catberry/catberry-dust/badge.png?branch=master)](https://coveralls.io/r/catberry/catberry-dust?branch=master)
+# Catberry Dust  [![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust) [![codecov.io](http://codecov.io/github/catberry/catberry-dust/coverage.svg?branch=master)](http://codecov.io/github/catberry/catberry-dust?branch=master)
 
 [![NPM](https://nodei.co/npm/catberry-dust.png)](https://nodei.co/npm/catberry-dust/)
 
