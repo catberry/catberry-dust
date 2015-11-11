@@ -58,7 +58,7 @@ TemplateProvider.prototype.registerCompiled = function (name, compiled) {
 
 /**
  * Renders template with data context.
- * @param {String} name Template name.
+ * @param {string} name Template name.
  * @param {Object} context Data context.
  * @returns {Promise<string>} Promise for rendered content.
  */
