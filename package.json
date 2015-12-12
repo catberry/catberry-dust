@@ -1,7 +1,7 @@
 {
 	"name": "catberry-dust",
 	"title": "Catberry fork of Dust - asynchronous template engine",
-	"version": "3.0.13",
+	"version": "3.0.14",
 	"author": {
 		"name": "Aleksander Williams",
 		"url": "http://akdubya.github.com/dustjs"
@@ -66,6 +66,6 @@
 	},
 	"license": "MIT",
 	"engine": {
-		"node": ">=0.10"
+		"node": ">=0.12"
 	}
 }
