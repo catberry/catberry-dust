@@ -1,6 +1,6 @@
 # Catberry Dust  
 
-[![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.png)](http://travis-ci.org/catberry/catberry-dust) [![codecov.io](http://codecov.io/github/catberry/catberry-dust/coverage.svg?branch=master)](http://codecov.io/github/catberry/catberry-dust?branch=master)
+[![Build Status](https://secure.travis-ci.org/catberry/catberry-dust.svg)](http://travis-ci.org/catberry/catberry-dust) [![codecov.io](http://codecov.io/github/catberry/catberry-dust/coverage.svg?branch=master)](http://codecov.io/github/catberry/catberry-dust?branch=master)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/catberry/main?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 It is Catberry fork of Linkedin fork of Dust template engine.
