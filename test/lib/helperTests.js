@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = [
 	{
 		name: "replace",
@@ -19,6 +21,7 @@ module.exports = [
 				source: '{@if cond="{x}<{y}"/}',
 				context: { x: 2, y: 3 },
 				expected: "",
+				error: "Error calling \"if\" helper: Missing body block in the if helper",
 				message: "should test if helper with no body and fail gracefully"
 			},
 			{
@@ -251,6 +254,7 @@ module.exports = [
 				source: '{@math key="-0" method="blah" operand="-4"/}',
 				context: {},
 				expected: "",
+				error: "Error calling \"math\" helper: Math method +\"blah\" is not supported",
 				message: "math helper blah operation"
 			},
 			{
@@ -736,6 +740,7 @@ module.exports = [
 				source: "{@select key=\"foo\"/}",
 				context: {},
 				expected: "",
+				error: "Error calling \"select\" helper: Missing body block in the select helper",
 				message: "select helper with no body silently fails with console log"
 			},
 			{
@@ -946,6 +951,7 @@ module.exports = [
 				].join("\n"),
 				context: { b: { z: "foo", x: "bar" } },
 				expected: "",
+				error: "Error calling \"select\" helper: No key given in the select helper",
 				message: "should test select helper with missing key in the context and hence no output"
 			},
 			{
@@ -1172,7 +1178,7 @@ module.exports = [
 				source: '{#callTap val=foo}{/callTap}',
 				context: {
 					callTap: function (chunk, context, bodies, params) {
-						return chunk.write(dust.helpers.tap(params.val, chunk,
+						return chunk.write(context.tap(params.val, chunk,
 							context));
 					},
 					foo: function () {
@@ -1189,7 +1195,7 @@ module.exports = [
 					callTap: function (chunk, context, bodies, params) {
 						for (var i = 1; i < 6; i++) {
 							if (params['p' + i]) {
-								chunk.write(dust.helpers.tap(params['p' + i],
+								chunk.write(context.tap(params['p' + i],
 									chunk, context));
 							}
 						}
@@ -1211,7 +1217,7 @@ module.exports = [
 					callTap: function (chunk, context, bodies, params) {
 						for (var i = 1; i < 6; i++) {
 							if (params['p' + i]) {
-								chunk.write(dust.helpers.tap(params['p' + i],
+								chunk.write(context.tap(params['p' + i],
 									chunk, context));
 							}
 						}
@@ -1231,7 +1237,7 @@ module.exports = [
 				source: '{#callTap val=foo}{/callTap}',
 				context: {
 					callTap: function (chunk, context, bodies, params) {
-						return chunk.write(dust.helpers.tap(params.val, chunk,
+						return chunk.write(context.tap(params.val, chunk,
 							context));
 					},
 					foo: function (chunk, context) {
@@ -1250,7 +1256,7 @@ module.exports = [
 					foo: {
 						bar: {
 							callTap: function (chunk, context, bodies, params) {
-								return chunk.write(dust.helpers.tap(params.val,
+								return chunk.write(context.tap(params.val,
 									chunk, context));
 							}
 						}
@@ -1296,7 +1302,7 @@ module.exports = [
 				name: "contextDump function dump test",
 				source: "{#aa param=\"{p}\"}{@contextDump key=\"full\"/}{/aa}",
 				context: { "aa": ["a"], "p": 42},
-				expected: "{\n  \"tail\": {\n    \"tail\": {\n      \"isObject\": true,\n      \"head\": {\n        \"aa\": [\n          \"a\"\n        ],\n        \"p\": 42\n      }\n    },\n    \"isObject\": true,\n    \"head\": {\n      \"param\": \"function body_2(chk, ctx) {return chk.reference(ctx.get([\\\"p\\\"], false), ctx, \\\"h\\\");}\",\n      \"$len\": 1,\n      \"$idx\": 0\n    }\n  },\n  \"isObject\": false,\n  \"head\": \"a\",\n  \"index\": 0,\n  \"of\": 1\n}",
+				expected: "{\n  \"tail\": {\n    \"tail\": {\n      \"isObject\": true,\n      \"head\": {\n        \"aa\": [\n          \"a\"\n        ],\n        \"p\": 42\n      }\n    },\n    \"isObject\": true,\n    \"head\": {\n      \"param\": \"function body_2(chk, ctx) {return chk.reference(ctx.get([\\\"p\\\"], false), ctx, []);}\",\n      \"$len\": 1,\n      \"$idx\": 0\n    }\n  },\n  \"isObject\": false,\n  \"head\": \"a\",\n  \"index\": 0,\n  \"of\": 1\n}",
 				message: "contextDump function dump test"
 			}
 		]

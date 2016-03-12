@@ -69,7 +69,7 @@ module.exports = [
 				source: '{#helper}{/helper}',
 				context: { "helper": function (chunk, context, bodies, params) {
 					var newContext = {};
-					return bodies.block(chunk, dust.makeBase(newContext));
+					return bodies.block(chunk, Dust.makeBase(newContext));
 				}
 				},
 				expected: "",
@@ -134,9 +134,9 @@ module.exports = [
 				context: {
 					type: function (chunk) {
 						return chunk.map(function (chunk) {
-							dust.nextTick(function () {
+							setTimeout(function () {
 								chunk.end("Async");
-							});
+							}, 1);
 						});
 					}
 				},
@@ -1249,11 +1249,11 @@ module.exports = [
 				].join("\n"),
 				context: { "loadTemplate": function (chunk, context, bodies,
 					params) {
-					var source = dust.testHelpers.tap(params.source, chunk,
+					var source = context.tap(params.source, chunk,
 							context),
-						name = dust.testHelpers.tap(params.name, chunk,
+						name = context.tap(params.name, chunk,
 							context);
-					dust.loadSource(dust.compile(source, name));
+					dust.templateManager.registerCompiled(name, dust.templateManager.compile(source));
 					return chunk.write('');
 				},
 					"printTemplateName": function (chunk, context, bodies,
@@ -1275,7 +1275,7 @@ module.exports = [
 				context: { "helper": function (chunk, context, bodies, params) {
 					var newContext = {};
 					return chunk.partial(params.template,
-						dust.makeBase(newContext));
+						Dust.makeBase(newContext));
 				}
 				},
 				expected: "Hello ! You have  new messages.",
@@ -1289,8 +1289,7 @@ module.exports = [
 				].join('\n'),
 				context: {
 					loadPartialTl: function (chunk, context, bodies, params) {
-						dust.loadSource(dust.compile('{.value}{.value.childValue.anotherChild}{name.nested}{$idx} ',
-							'partialTl'));
+						dust.templateManager.registerCompiled('partialTl', dust.templateManager.compile('{.value}{.value.childValue.anotherChild}{name.nested}{$idx} '));
 						return chunk;
 					}
 				},
@@ -1820,7 +1819,7 @@ module.exports = [
 					var a;
 					a.slice(1);
 				}},
-				error: "undefined",
+				error: "Cannot read property 'slice' of undefined",
 				message: "should test helper syntax errors being handled gracefully"
 			},
 			{
@@ -1833,7 +1832,7 @@ module.exports = [
 						chunk.end();
 					})
 				}},
-				error: "undefined",
+				error: "Cannot read property 'slice' of undefined",
 				message: "should test helper syntax errors inside an async block being handled gracefully"
 			}
 		]
@@ -1980,6 +1979,7 @@ module.exports = [
 				source: "some text {@notfound}foo{/notfound} some text",
 				context: {},
 				log: "Invalid helper [notfound]",
+				error: "Error calling \"notfound\" helper: Helper \"notfound\" not found",
 				message: "Should crash the application if a helper is not found"
 			},
 			{
@@ -1987,6 +1987,7 @@ module.exports = [
 				source: "{obj|nullcheck|invalid}",
 				context: { obj: "test" },
 				log: "Invalid filter [nullcheck]",
+				error: "Helper \"nullcheck\" is not a function",
 				message: "should fail hard for invalid filter"
 			},
 			{
@@ -2021,7 +2022,7 @@ module.exports = [
 				name: "Errors should be throwable from helpers and consumed in the render callback/stream onerror",
 				source: "{@error errorMessage=\"helper error\"}{/error}",
 				context: { },
-				error: "helper error",
+				error: "Error calling \"error\" helper: helper error",
 				message: "test to make sure errors are properly caught and propogated to the callbacks."
 			}
 		]
