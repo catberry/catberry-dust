@@ -1,5 +1,0 @@
-coverage
-lib/parser.js
-test/lib/coreTests.js
-test/lib/helperTests.js
-node_modules

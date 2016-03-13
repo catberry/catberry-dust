@@ -1,108 +1,122 @@
 'use strict';
 
-global.Promise = require('promise');
-var coreTests = require('./coreTests'),
-	helperTests = require('./helperTests'),
-	assert = require('assert'),
-	Dust = require('../../lib/Dust'),
-	Stack = require('../../lib/Stack'),
-	Context = require('../../lib/Context');
+const coreTests = require('./coreTests');
+const helperTests = require('./helperTests');
+const ServiceLocator = require('catberry-locator');
+const assert = require('assert');
+const events = require('events');
+const Dust = require('../../lib/Dust');
+const engineClasses = require('../../lib/engineClasses');
+const Stack = engineClasses.Stack;
+const Context = engineClasses.Context;
 
-describe('Test the basic functionality of dust', function () {
+/* eslint prefer-arrow-callback:0 */
+/* eslint max-nested-callbacks:0 */
+/* eslint require-jsdoc:0 */
+describe('Test the basic functionality of dust', function() {
+	const locator = new ServiceLocator();
+	const eventBus = new events.EventEmitter();
+	eventBus.on('error', () => {});
+	locator.registerInstance('eventBus', eventBus);
+	global.Dust = Dust;
+	global.dust = new Dust(locator);
+	dust.helperManager.add('error', (chunk, context, bodies, params) => {
+		throw new Error(params.errorMessage);
+	});
+	dust.helperManager.add('tapper', (chunk, context, bodies, params) => {
+		return chunk.write(context ? context.tap(params.value, chunk) : params.value);
+	});
+
 	generateTestsForSuite(coreTests);
 	generateTestsForSuite(helperTests);
-});
 
-function generateTestsForSuite(suite) {
-	for (var index = 0; index < suite.length; index++) {
-		for (var i = 0; i < suite[index].tests.length; i++) {
-			var test = suite[index].tests[i];
-			it('RENDER: ' + test.message, render(test));
-			it('STREAM: ' + test.message, stream(test));
+	function generateTestsForSuite(suite) {
+		for (var index = 0; index < suite.length; index++) {
+			for (var i = 0; i < suite[index].tests.length; i++) {
+				var test = suite[index].tests[i];
+				it(`RENDER: ${test.message}`, render(test));
+				it(`STREAM: ${test.message}`, stream(test));
+			}
 		}
 	}
-}
 
-function render(test) {
-	return function (done) {
-		Promise.resolve()
-			.then(function () {
-				var dust = new Dust(),
-					compiled = dust.templateManager.compile(test.source),
-					context;
+	function render(test) {
+		return function(done) {
+			Promise.resolve()
+				.then(function() {
+					const compiled = dust.templateManager.compile(test.source);
+					let context;
+
+					dust.templateManager.registerCompiled(test.name, compiled);
+					context = test.context;
+					if (test.base) {
+						const renderingContext = new Context(
+							new Stack(), test.base, null, null, dust
+						);
+						context = renderingContext.push(context);
+					}
+					return dust.render(test.name, context);
+				})
+				.then(output => {
+					if (test.error) {
+						assert.fail(null, test.error);
+					}
+					if (test.expected) {
+						assert.strictEqual(output, test.expected);
+					}
+				})
+				.catch(reason => {
+					if (test.error) {
+						assert.strictEqual(reason.message, test.error);
+					} else {
+						throw reason;
+					}
+				})
+				.then(done)
+				.catch(done);
+		};
+	}
+
+	function stream(test) {
+		return function(done) {
+			new Promise((fulfill, reject) => {
+				const compiled = dust.templateManager.compile(test.source);
+				let context;
 
 				dust.templateManager.registerCompiled(test.name, compiled);
 				context = test.context;
 				if (test.base) {
-					var renderingContext = new Context(
+					const renderingContext = new Context(
 						new Stack(), test.base, null, null, dust
 					);
 					context = renderingContext.push(context);
 				}
-				return dust.render(test.name, context);
+
+				let output = '';
+				dust.getStream(test.name, context)
+					.on('data', data => {
+						output += data;
+					})
+					.on('end', () => fulfill(output))
+					.on('error', error => reject(error));
 			})
-			.then(function (output) {
-				if (test.error) {
-					assert.fail(null, test.error);
-				}
-				assert.strictEqual(output, test.expected);
-			})
-			.then(function (reason) {
-				if (test.error) {
-					assert.strictEqual(reason.message, test.error);
-					done();
-				} else {
-					done(reason);
-				}
-			}, function () {
-				done();
-			});
-	};
-}
-
-function stream(test) {
-	return function (done) {
-		new Promise(function (fulfill, reject) {
-			var dust = new Dust(),
-				compiled = dust.templateManager.compile(test.source),
-				context;
-
-			dust.templateManager.registerCompiled(test.name, compiled);
-			context = test.context;
-			if (test.base) {
-				var renderingContext = new Context(
-					new Stack(), test.base, null, null, dust
-				);
-				context = renderingContext.push(context);
-			}
-
-			var output = '';
-			dust.getStream(test.name, context)
-				.on('data', function (data) {
-					output += data;
+				.then(output => {
+					if (test.error) {
+						assert.fail(null, test.error);
+					}
+					if (test.expected) {
+						assert.strictEqual(output, test.expected);
+					}
 				})
-				.on('end', function () {
-					fulfill(output);
+				.catch(reason => {
+					if (test.error) {
+						assert.strictEqual(reason.message, test.error);
+					} else {
+						throw reason;
+					}
 				})
-				.on('error', function (error) {
-					reject(error);
-				});
-		})
-			.then(function (output) {
-				if (test.error) {
-					assert.fail(null, test.error);
-				}
-				assert.strictEqual(output, test.expected);
-			})
-			.then(function (reason) {
-				if (test.error) {
-					assert.strictEqual(reason.message, test.error);
-					done();
-				} else {
-					done(reason);
-				}
-			}, function () {
-				done();
-			});
-	};
-}
+				.then(done)
+				.catch(done);
+		};
+	}
+});
