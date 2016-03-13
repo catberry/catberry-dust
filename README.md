@@ -5,6 +5,12 @@
 
 It is Catberry fork of Linkedin fork of Dust template engine.
 
+## Installation
+
+```bash
+npm install catberry-handlebars --save
+```
+
 ## Getting Started
 A quick tutorial for how to use Dust [here](docs/tutorial.md).
 
