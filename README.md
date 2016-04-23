@@ -8,7 +8,7 @@ It is Catberry fork of Linkedin fork of Dust template engine.
 ## Installation
 
 ```bash
-npm install catberry-handlebars --save
+npm install catberry-dust --save
 ```
 
 ## Getting Started
