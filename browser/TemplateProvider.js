@@ -12,6 +12,14 @@ class TemplateProvider {
 	}
 
 	/**
+	 * Gets the template provider name for identification.
+	 * @returns {string} Name of the provider.
+	 */
+	getName() {
+		return 'dust';
+	}
+
+	/**
 	 * Registers compiled source of template.
 	 * @param {string} name Template name.
 	 * @param {string} compiled Template compiled source.
